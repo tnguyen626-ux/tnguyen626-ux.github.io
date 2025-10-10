@@ -1,5 +1,5 @@
-# Track Fitness
 # My Project Desciption 
+# Track Fitness
 
 Track Fitness is a simple web app for loggin your workouts and turning them into insights. Add any activity in seconds, see weekly and monthly trends, set goals that actually stick, and keep your profile dialed to your preferences. Clean, fast, and built to help you stay consistent. 
 
