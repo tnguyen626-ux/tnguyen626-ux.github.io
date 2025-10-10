@@ -30,3 +30,7 @@ Layout overview
   - Visual progess
 - Profile
   - Personal details, units/timezone, preferred activities, data backup/export/import
+
+# Initial Layout 
+<img width="1166" height="551" alt="Screenshot 2025-10-09 at 8 05 10 PM" src="https://github.com/user-attachments/assets/1fa676e1-925c-4167-9548-be9231efb87e" />
+
