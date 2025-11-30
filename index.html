@@ -1,25 +1,309 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Thanh Nguyen — Portfolio</title>
-  <link rel="icon" href="data:,">
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:48px;background:#0d1117;color:#e6edf3}
-    .card{max-width:780px;margin:auto;background:#161b22;border:1px solid #30363d;border-radius:16px;padding:28px}
-    a{color:#58a6ff;text-decoration:none}
-    a:hover{text-decoration:underline}
-    h1{margin-top:0}
-  </style>
+  <meta charset="UTF-8" />
+  <title>Track Fitness</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>Hi, I’m Thanh 👋</h1>
-    <p>Welcome to my GitHub Pages site. I’ll put projects and notes here.</p>
-    <ul>
-      <li><a href="https://github.com/tnguyen626-ux">My GitHub profile</a></li>
-    </ul>
+<header class="top-nav">
+  <div class="logo">Track Fitness</div>
+  <nav class="nav-links">
+    <button class="nav-link active" data-view="dashboard">Dashboard</button>
+    <button class="nav-link" data-view="log">Log Activity</button>
+    <button class="nav-link" data-view="history">History</button>
+    <button class="nav-link" data-view="goals">Goals</button>
+    <button class="nav-link" data-view="profile">Profile</button>
+  </nav>
+  <div style="display: flex; gap: 8px; align-items: center;">
+    <button class="quick-add-btn" data-view="log">Quick Add</button>
+    <button id="logout-btn" class="secondary-btn" style="display: none;">
+      Log out
+    </button>
   </div>
+</header>
+
+
+<main class="main">
+  <!-- AUTH (login / create account) -->
+  <section id="auth" class="view active">
+    <h1>Welcome to Track Fitness</h1>
+    <p class="subtitle">
+      Log in or create a free account to track your workouts.
+    </p>
+
+    <div class="card form-card">
+      <div class="auth-toggle">
+        <button type="button" id="btn-show-login" class="primary-btn">
+          Log In
+        </button>
+        <button type="button" id="btn-show-signup" class="secondary-btn">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Login form -->
+      <form id="login-form">
+        <div class="form-row">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-row">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Log In</button>
+        </div>
+      </form>
+
+      <!-- Signup form -->
+      <form id="signup-form" style="display: none; margin-top: 12px;">
+        <div class="form-row">
+          <label for="signup-name">Name</label>
+          <input type="text" id="signup-name" required />
+        </div>
+        <div class="form-row">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required />
+        </div>
+        <div class="form-row">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" required />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="view">
+      <h1>Dashboard</h1>
+        <p class="subtitle">
+            Your weekly overview at a glance.
+        </p>
+
+
+      <div class="dashboard-cards">
+        <div class="card">
+          <div class="card-value" id="dash-week-min">0</div>
+          <div class="card-label">Minutes this week</div>
+          <div class="card-sub" id="dash-vs-last">+0 vs last week</div>
+        </div>
+
+        <div class="card">
+          <div class="card-value" id="dash-activities">0</div>
+          <div class="card-label">Activities logged</div>
+          <div class="card-sub">This month</div>
+        </div>
+
+        <div class="card">
+          <div class="card-value" id="dash-streak">0 days</div>
+          <div class="card-label">Current streak</div>
+          <div class="card-sub">Keep it going</div>
+        </div>
+      </div>
+
+      <!-- Weekly Trend -->
+      <section class="card wide">
+        <h2>Weekly Trend</h2>
+        <div class="weekly-bars" id="weekly-bars">
+          <!-- bars created by JS -->
+        </div>
+        <div class="weekly-labels">
+          <span>Mon</span><span>Tue</span><span>Wed</span>
+          <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+      </section>
+
+      <!-- Goals progress -->
+      <div class="dashboard-cards">
+        <div class="card wide">
+          <h3>Weekly Goal (min)</h3>
+          <div class="progress">
+            <div id="weekly-goal-bar" class="progress-bar"></div>
+          </div>
+          <div id="weekly-goal-text" class="progress-text">0 / 0 min</div>
+        </div>
+
+        <div class="card wide">
+          <h3>Monthly Goal (distance)</h3>
+          <div class="progress">
+            <div id="monthly-goal-bar" class="progress-bar"></div>
+          </div>
+          <div id="monthly-goal-text" class="progress-text">0 / 0 km</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOG ACTIVITY -->
+    <section id="log" class="view">
+      <h1>Log Activity</h1>
+      <form id="log-form" class="card form-card">
+        <div class="form-row">
+          <label for="date">Date</label>
+          <input type="date" id="date" required />
+        </div>
+
+        <div class="form-row">
+          <label for="type">Activity Type</label>
+          <select id="type">
+            <option>Run</option>
+            <option>Walk</option>
+            <option>Bike</option>
+            <option>Swim</option>
+            <option>Workout</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="duration">Duration (min)</label>
+          <input type="number" id="duration" min="1" required />
+        </div>
+
+        <div class="form-row">
+          <label for="distance">Distance (km)</label>
+          <input type="number" step="0.01" id="distance" />
+        </div>
+
+        <div class="form-row">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="2"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Add Activity</button>
+        </div>
+      </form>
+
+      <div class="preset-buttons card">
+        <h3>Presets</h3>
+        <div class="chip-row">
+          <button class="chip" data-type="Run" data-duration="30">Run 30 min</button>
+          <button class="chip" data-type="Walk" data-duration="20">Walk 20 min</button>
+          <button class="chip" data-type="Bike" data-duration="45">Bike 45 min</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="history" class="view">
+      <h1>History</h1>
+
+      <div class="card filters">
+        <div class="form-row">
+          <label for="filter-type">Type</label>
+          <select id="filter-type">
+            <option value="">All</option>
+            <option>Run</option>
+            <option>Walk</option>
+            <option>Bike</option>
+            <option>Swim</option>
+            <option>Workout</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="filter-from">From</label>
+          <input type="date" id="filter-from" />
+        </div>
+
+        <div class="form-row">
+          <label for="filter-to">To</label>
+          <input type="date" id="filter-to" />
+        </div>
+
+        <div class="form-row">
+          <label for="search-notes">Search notes</label>
+          <input type="text" id="search-notes" placeholder="keyword..." />
+        </div>
+
+        <button id="clear-filters" class="secondary-btn">Clear</button>
+      </div>
+
+      <div class="card">
+        <div class="history-summary">
+          <span id="history-total-min">Total min: 0</span>
+          <span id="history-total-dist">Total distance: 0 km</span>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Duration</th>
+              <th>Distance</th>
+              <th>Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-body">
+            <!-- rows injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GOALS -->
+    <section id="goals" class="view">
+      <h1>Goals</h1>
+      <form id="goals-form" class="card form-card">
+        <div class="form-row">
+          <label for="goal-weekly-min">Weekly minutes goal</label>
+          <input type="number" id="goal-weekly-min" min="0" />
+        </div>
+        <div class="form-row">
+          <label for="goal-monthly-dist">Monthly distance goal (km)</label>
+          <input type="number" id="goal-monthly-dist" min="0" step="0.1" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Save Goals</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile" class="view">
+      <h1>Profile</h1>
+      <form id="profile-form" class="card form-card">
+        <div class="form-row">
+          <label for="profile-name">Name</label>
+          <input type="text" id="profile-name" placeholder="Your name" />
+        </div>
+
+        <div class="form-row">
+          <label for="units">Units</label>
+          <select id="units">
+            <option value="km">Kilometers</option>
+            <option value="mi">Miles</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="timezone">Timezone (label only)</label>
+          <input type="text" id="timezone" placeholder="e.g. PST" />
+        </div>
+
+        <div class="form-row">
+          <label>Default activities</label>
+          <div class="chip-row">
+            <label><input type="checkbox" value="Run" checked /> Run</label>
+            <label><input type="checkbox" value="Walk" /> Walk</label>
+            <label><input type="checkbox" value="Bike" /> Bike</label>
+            <label><input type="checkbox" value="Swim" /> Swim</label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Save Profile</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
